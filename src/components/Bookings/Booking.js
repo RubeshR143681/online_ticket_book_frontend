@@ -1,16 +1,24 @@
 import { Button, FormLabel, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { Fragment, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getMovieDetails, newBooking } from "../../api-helpers/api-helpers";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Booking = () => {
   const [movie, setMovie] = useState();
-  const [inputs, setInputs] = useState({ seatNumber: "", date: "" });
+  const [selectedSeats, setSelectedSeats] = useState([]);
+
+  const navigate = useNavigate();
+
+  const [inputs, setInputs] = useState({
+    seatNumber: selectedSeats,
+    date: "",
+  });
 
   const rows = 5; // Number of rows
   const seatsPerRow = 6; // Number of seats per row
-  const [selectedSeats, setSelectedSeats] = useState([]);
 
   const generateSeatLabel = (row, seat) => {
     return String.fromCharCode(65 + row) + (seat + 1);
@@ -35,19 +43,46 @@ const Booking = () => {
       .then((res) => setMovie(res.movie))
       .catch((err) => console.log(err));
   }, [id]);
-  const handleChange = (e) => {
+
+  useEffect(() => {
     setInputs((prevState) => ({
       ...prevState,
-      [e.target.name]: e.target.value,
+      seatNumber: selectedSeats.join(", "),
     }));
+  }, [selectedSeats]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "seatNumber") {
+      setInputs((prevState) => ({
+        ...prevState,
+        seatNumber: value,
+      }));
+    } else {
+      setInputs((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
   };
-  const handleSubmit = (e) => {
+
+  console.log("this is inputs", inputs);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(inputs);
-    newBooking({ ...inputs, movie: movie._id })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+
+    try {
+      const res = await newBooking({ ...inputs, movie: movie._id });
+      console.log("Booking successful:", res);
+      toast.success("Booking successful");
+      navigate("/movies");
+    } catch (err) {
+      console.log("Booking failed:", err);
+      toast.error("Booking failed");
+    }
   };
+
+  console.log("this is seleted set", selectedSeats);
   return (
     <div
       style={{
@@ -135,15 +170,17 @@ const Booking = () => {
                       ))}
                     </div>
                     <div>
-                      <p>Selected Seats: {selectedSeats.join(", ")}</p>
+                      {/* <p>Selected Seats: {selectedSeats.join(", ")}</p> */}
                     </div>
                   </div>
-                  <FormLabel>Seat Number</FormLabel>
+                  <FormLabel style={{ marginTop: "20px" }}>
+                    Seat Number
+                  </FormLabel>
                   <TextField
                     name="seatNumber"
-                    value={inputs.seatNumber}
+                    value={selectedSeats.join(", ")}
                     onChange={handleChange}
-                    type={"number"}
+                    type={"text"}
                     margin="normal"
                     variant="standard"
                   />

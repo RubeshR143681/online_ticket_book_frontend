@@ -15,10 +15,15 @@ import {
 } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import profileImg from "../images/pro3.png";
+import { useNavigate } from "react-router-dom";
+import { WindowSharp } from "@mui/icons-material";
 
 const UserProfile = () => {
   const [bookings, setBookings] = useState();
   const [user, setUser] = useState();
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     getUserBooking()
       .then((res) => setBookings(res.bookings))
@@ -28,11 +33,19 @@ const UserProfile = () => {
       .then((res) => setUser(res.user))
       .catch((err) => console.log(err));
   }, []);
-  const handleDelete = (id) => {
-    deleteBooking(id)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+
+  const handleDelete = async (id) => {
+    try {
+      const res = await deleteBooking(id);
+      console.log("Booking successful:", res);
+      // toast.success("Booking successful");
+      window.location.reload();
+    } catch (err) {
+      console.log("Booking failed:", err);
+      // toast.error("Booking failed");
+    }
   };
+
   return (
     <Box
       width={"100%"}
