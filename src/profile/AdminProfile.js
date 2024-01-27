@@ -2,16 +2,27 @@ import { Box } from "@mui/system";
 import React, { Fragment, useEffect, useState } from "react";
 import { getAdminById } from "../api-helpers/api-helpers";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { List, ListItem, ListItemText, Typography } from "@mui/material";
+import {
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import profileImg from "../images/pro3.png";
 
 const AdminProfile = () => {
   const [admin, setAdmin] = useState();
+
+  const [userproLoad, setUserProLoad] = useState(true);
+  const [bookingProLoad, setBookingProLoad] = useState(true);
+
   useEffect(() => {
     getAdminById()
       .then((res) => setAdmin(res.admin))
       .catch((err) => console.log(err));
   }, []);
+
   return (
     <Box
       width={"100%"}

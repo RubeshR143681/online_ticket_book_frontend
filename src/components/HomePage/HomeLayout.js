@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, CircularProgress } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getAllMovies } from "../../api-helpers/api-helpers";
@@ -13,24 +13,35 @@ import annaporni from "../../images/anna.jpg";
 import fn from "../../images/fn.jpg";
 import pstwo from "../../images/pstwo.jpg";
 
-const settings = {
-  dots: true,
-  infinite: true,
-  speed: 1500,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  autoplay: true,
-  autoplaySpeed: 2000,
-};
-
 const HomeLayout = () => {
+  const [loadingHMovie, setLoadingHMovie] = useState(true);
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 1500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+  };
+
   const [movies, setMovies] = useState();
 
   useEffect(() => {
-    getAllMovies()
-      .then((data) => setMovies(data.movies))
-      .catch((err) => console.log(err));
+    const fetchMovieDetails = async () => {
+      try {
+        const res = await getAllMovies();
+        setMovies(res.movies);
+        setLoadingHMovie(false); // Set loading to false after fetching movie details
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchMovieDetails();
   }, []);
+
   console.log("this is movie===>", movies);
   return (
     <>
@@ -76,28 +87,40 @@ const HomeLayout = () => {
             Latest Releases
           </Typography>
         </Box>
-        <Box
-          gap={4}
-          margin="auto"
-          width="90%"
-          flexWrap={"wrap"}
-          display="flex"
-          justifyContent={"center"}
-        >
-          {movies &&
-            movies
-              .slice(0, 4)
-              .map((movie, index) => (
-                <CradLayout
-                  id={movie._id}
-                  title={movie.title}
-                  releaseDate={movie.releaseDate}
-                  posterUrl={movie.posterUrl}
-                  description={movie.description}
-                  key={index}
-                />
-              ))}
-        </Box>
+        {loadingHMovie ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="flex-start"
+            height="calc(100vh - 64px)" // Adjust the height based on your layout
+          >
+            <CircularProgress style={{ color: "white" }} />
+          </Box>
+        ) : (
+          <Box
+            gap={4}
+            margin="auto"
+            width="90%"
+            flexWrap={"wrap"}
+            display="flex"
+            justifyContent={"center"}
+          >
+            {movies &&
+              movies
+                .slice(0, 4)
+                .map((movie, index) => (
+                  <CradLayout
+                    id={movie._id}
+                    title={movie.title}
+                    releaseDate={movie.releaseDate}
+                    posterUrl={movie.posterUrl}
+                    description={movie.description}
+                    key={index}
+                  />
+                ))}
+          </Box>
+        )}
+
         <Box display={"flex"} padding={5} margin="auto">
           <Button
             LinkComponent={Link}

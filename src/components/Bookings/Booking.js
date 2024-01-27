@@ -10,6 +10,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getMovieDetails, newBooking } from "../../api-helpers/api-helpers";
 import "react-toastify/dist/ReactToastify.css";
+
 import Swal from "sweetalert2";
 
 const Toast = Swal.mixin({
@@ -29,6 +30,9 @@ const Toast = Swal.mixin({
 const Booking = () => {
   const [movie, setMovie] = useState();
   const [selectedSeats, setSelectedSeats] = useState([]);
+  const [totalTicketPrice, setTotalTicketPrice] = useState(); // New state for total ticket price
+
+  console.log("this is move==>", movie);
 
   const [loadingMovie, setLoadingMovie] = useState(true);
 
@@ -64,8 +68,9 @@ const Booking = () => {
     const fetchMovieDetails = async () => {
       try {
         const res = await getMovieDetails(id);
+
         setMovie(res.movie);
-        setLoadingMovie(false); // Set loading to false after fetching movie details
+        setLoadingMovie(false);
       } catch (err) {
         console.log(err);
       }
@@ -96,8 +101,6 @@ const Booking = () => {
     }
   };
 
-  console.log("this is inputs", inputs);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -124,6 +127,7 @@ const Booking = () => {
   };
 
   console.log("this is seleted set", selectedSeats);
+
   return (
     <div
       style={{
@@ -183,7 +187,7 @@ const Booking = () => {
                     </Typography>
                   </Box>
                 </Box>
-                <Box width={"50%"} paddingTop={3}>
+                <Box width={"50%"} marginTop={"-15px"}>
                   <form onSubmit={handleSubmit}>
                     <Box
                       padding={5}
@@ -191,6 +195,20 @@ const Booking = () => {
                       display="flex"
                       flexDirection={"column"}
                     >
+                      <div>
+                        <p>
+                          <span
+                            style={{
+                              fontWeight: 600,
+                              fontSize: "18px",
+                              marginRight: "15px",
+                            }}
+                          >
+                            Ticket Price :
+                          </span>
+                          ₹{movie.ticket_price}
+                        </p>
+                      </div>
                       <div>
                         <h2>Movie Seat Booking</h2>
                         <div>
@@ -245,6 +263,20 @@ const Booking = () => {
                         value={inputs.date}
                         onChange={handleChange}
                       />
+                      <div>
+                        <p>
+                          <span
+                            style={{
+                              fontWeight: 600,
+                              fontSize: "18px",
+                              marginRight: "15px",
+                            }}
+                          >
+                            Final Ticket Price :
+                          </span>
+                          ₹{movie.ticket_price * selectedSeats.length}
+                        </p>
+                      </div>
                       <Button
                         type="submit"
                         fullWidth

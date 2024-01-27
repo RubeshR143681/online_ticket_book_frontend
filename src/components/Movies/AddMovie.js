@@ -36,6 +36,7 @@ const AddMovie = () => {
   const [inputs, setInputs] = useState({
     title: "",
     description: "",
+    ticket_price: "",
     posterUrl: "",
     releaseDate: "",
     featured: false,
@@ -119,6 +120,14 @@ const AddMovie = () => {
             value={inputs.description}
             onChange={handleChange}
             name="description"
+            variant="standard"
+            margin="normal"
+          />
+          <FormLabel sx={labelProps}>Ticket Price (INR)</FormLabel>
+          <TextField
+            value={inputs.ticket_price}
+            onChange={handleChange}
+            name="ticket_price"
             variant="standard"
             margin="normal"
           />

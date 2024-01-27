@@ -5,7 +5,7 @@ import Admin from "./components/Auth/Admin";
 import Auth from "./components/Auth/Auth";
 import Booking from "./components/Bookings/Booking";
 import Header from "./components/Header";
-import HomeLayout from "./components/HomePage/HomeLayout"
+import HomeLayout from "./components/HomePage/HomeLayout";
 import AddMovie from "./components/Movies/AddMovie";
 import Movies from "./components/Movies/Movies";
 import AdminProfile from "./profile/AdminProfile";
@@ -25,6 +25,7 @@ function App() {
       dispatch(adminActions.login());
     }
   }, [dispatch]);
+
   return (
     <div>
       <Header />

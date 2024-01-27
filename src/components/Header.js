@@ -14,6 +14,7 @@ import { getAllMovies } from "../api-helpers/api-helpers";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { adminActions, userActions } from "../store";
+import moivelogo from "../images/download.jpg";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -43,7 +44,8 @@ const Header = () => {
       <Toolbar>
         <Box width={"20%"}>
           <IconButton LinkComponent={Link} to="/">
-            <MovieIcon style={{color:"white"}}/>
+            {/* <MovieIcon style={{color:"white"}}/> */}
+            <img src={moivelogo} style={{ width: "50%" }} alt="movie logo" />
           </IconButton>
         </Box>
         <Box width={"30%"} margin="auto">
@@ -71,13 +73,23 @@ const Header = () => {
             <Tab LinkComponent={Link} to="/movies" label="Movies" />
             {!isAdminLoggedIn && !isUserLoggedIn && (
               <>
-                <Tab key="Admin" label="Admin" LinkComponent={Link} to="/admin" />
+                <Tab
+                  key="Admin"
+                  label="Admin"
+                  LinkComponent={Link}
+                  to="/admin"
+                />
                 <Tab key="Auth" label="Auth" LinkComponent={Link} to="/auth" />
               </>
             )}
             {isUserLoggedIn && (
               <>
-                <Tab key="Profile" label="Profile" LinkComponent={Link} to="/user" />
+                <Tab
+                  key="Profile"
+                  label="Profile"
+                  LinkComponent={Link}
+                  to="/user"
+                />
                 <Tab
                   onClick={() => logout(false)}
                   key="Logout"
@@ -89,8 +101,18 @@ const Header = () => {
             )}
             {isAdminLoggedIn && (
               <>
-                <Tab key="Add Movie" label="Add Movie" LinkComponent={Link} to="/add" />
-                <Tab label="Profile" key="Profile" LinkComponent={Link} to="/user-admin" />
+                <Tab
+                  key="Add Movie"
+                  label="Add Movie"
+                  LinkComponent={Link}
+                  to="/add"
+                />
+                <Tab
+                  label="Profile"
+                  key="Profile"
+                  LinkComponent={Link}
+                  to="/user-admin"
+                />
                 <Tab
                   onClick={() => logout(true)}
                   label="Logout"
