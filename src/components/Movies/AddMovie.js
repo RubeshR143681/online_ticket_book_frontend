@@ -8,11 +8,31 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { addMovie } from "../../api-helpers/api-helpers";
-const labelProps = {
-  mt: 1,
-  mb: 1,
-};
+import { useParams, useNavigate } from "react-router-dom";
+
+import Swal from "sweetalert2";
 const AddMovie = () => {
+  const navigate = useNavigate();
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "bottom-right",
+    iconColor: "white",
+    background: "green",
+    color: "white",
+    customClass: {
+      popup: "colored-toast",
+    },
+    showConfirmButton: false,
+    timer: 2500,
+    timerProgressBar: true,
+  });
+
+  const labelProps = {
+    mt: 1,
+    mb: 1,
+  };
+
   const [inputs, setInputs] = useState({
     title: "",
     description: "",
@@ -28,15 +48,46 @@ const AddMovie = () => {
       [e.target.name]: e.target.value,
     }));
   };
-  const handleSubmit = (e) => {
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log(inputs, actors);
+  //   addMovie({ ...inputs, actors })
+  //     .then((res) => console.log(res))
+  //     .catch((err) => console.log(err));
+  // };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(inputs, actors);
-    addMovie({ ...inputs, actors })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+
+    try {
+      const res = await addMovie({ ...inputs, actors });
+      console.log("Booking successful:", res);
+
+      await Toast.fire({
+        icon: "success",
+        text: "Your movie has been Added successfully",
+        background: "green",
+        color: "white",
+      });
+      navigate("/movies");
+    } catch (err) {
+      Toast.fire({
+        icon: "error",
+        title: "User Details are wrong Please Enter correct details",
+        background: "red",
+        color: "white",
+      });
+      console.log("Booking failed:", err);
+    }
   };
+
   return (
-    <div>
+    <div
+      style={{
+        background: "linear-gradient(to right, #7b4397, #dc2430)",
+        padding: "60px",
+      }}
+    >
       <form onSubmit={handleSubmit}>
         <Box
           width={"50%"}
@@ -44,7 +95,13 @@ const AddMovie = () => {
           margin="auto"
           display={"flex"}
           flexDirection="column"
-          boxShadow={"10px 10px 20px #ccc"}
+          bgcolor={"white"}
+          borderRadius={"20px"}
+          sx={{
+            ":hover": {
+              boxShadow: "10px 10px 20px #ccc",
+            },
+          }}
         >
           <Typography textAlign={"center"} variant="h5" fontFamily={"verdana"}>
             Add New Movie

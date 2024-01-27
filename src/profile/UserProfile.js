@@ -1,5 +1,7 @@
 import { Box } from "@mui/system";
 import React, { Fragment, useEffect, useState } from "react";
+import "../profile/user.css";
+
 import {
   deleteBooking,
   getUserBooking,
@@ -16,7 +18,7 @@ import {
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import profileImg from "../images/pro3.png";
 import { useNavigate } from "react-router-dom";
-import { WindowSharp } from "@mui/icons-material";
+import Swal from "sweetalert2";
 
 const UserProfile = () => {
   const [bookings, setBookings] = useState();
@@ -35,14 +37,34 @@ const UserProfile = () => {
   }, []);
 
   const handleDelete = async (id) => {
+    // try {
+    //   const res = await deleteBooking(id);
+    //   console.log("Booking successful:", res);
+    //   // toast.success("Booking successful");
+    //   window.location.reload();
+    // }
     try {
-      const res = await deleteBooking(id);
-      console.log("Booking successful:", res);
-      // toast.success("Booking successful");
-      window.location.reload();
+      Swal.fire({
+        title: `Are you sure to Cancel this movie?`,
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await deleteBooking(id);
+          await Swal.fire(
+            "Caneled!",
+            `Your movie   has been Caneled.`,
+            "success"
+          );
+          window.location.reload();
+        }
+      });
     } catch (err) {
       console.log("Booking failed:", err);
-      // toast.error("Booking failed");
     }
   };
 
@@ -143,7 +165,8 @@ const UserProfile = () => {
                       onClick={() => handleDelete(booking._id)}
                       color="error"
                     >
-                      <DeleteForeverIcon />
+                      {/* className="bg-transparent border border-red-400  text-red-400 h-[30px] w-[70px] hover:text-white hover:bg-red-500 rounded font-semibold" */}
+                      <button className="myButton">Cancel</button>
                     </IconButton>
                   </ListItem>
                 ))}

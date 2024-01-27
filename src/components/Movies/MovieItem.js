@@ -13,8 +13,8 @@ const MovieItem = ({ title, releaseDate, posterUrl, id }) => {
     <Card
       sx={{
         margin: 3,
-        width: 300,
-        height: 350,
+        width: 250,
+        height: 300,
         borderRadius: 5,
         ":hover": {
           boxShadow: "10px 10px 20px #ccc",

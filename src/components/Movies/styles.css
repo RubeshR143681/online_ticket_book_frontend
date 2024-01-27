@@ -1,0 +1,6 @@
+.hey {
+  margin: 0;
+  background: linear-gradient(to right, #7b4397, #dc2430);
+  min-height: 100vh;
+  overflow-y: auto; /* Enable scrolling if content is taller than viewport */
+}
