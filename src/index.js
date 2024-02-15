@@ -6,8 +6,9 @@ import { BrowserRouter } from "react-router-dom";
 import axios from "axios";
 import { Provider } from "react-redux";
 import { store } from "./store";
-const root = ReactDOM.createoot(document.getElementById("root"));
-axios.defaults.baseURL = "https://ticketbook-backend.onrender.com/";
+const root = ReactDOM.createRoot(document.getElementById("root"));
+// axios.defaults.baseURL = "https://ticketbook-backend.onrender.com/";
+axios.defaults.baseURL = "http://localhost:5000/";
 root.render(
   <React.StrictMode>
     <BrowserRouter>

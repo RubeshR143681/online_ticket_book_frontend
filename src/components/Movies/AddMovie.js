@@ -37,6 +37,7 @@ const AddMovie = () => {
     title: "",
     description: "",
     ticket_price: "",
+    available_time: "",
     posterUrl: "",
     releaseDate: "",
     featured: false,
@@ -56,6 +57,8 @@ const AddMovie = () => {
   //     .then((res) => console.log(res))
   //     .catch((err) => console.log(err));
   // };
+
+  console.log("this is co", inputs);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -128,6 +131,14 @@ const AddMovie = () => {
             value={inputs.ticket_price}
             onChange={handleChange}
             name="ticket_price"
+            variant="standard"
+            margin="normal"
+          />
+          <FormLabel sx={labelProps}>Show available Time </FormLabel>
+          <TextField
+            value={inputs.available_time}
+            onChange={handleChange}
+            name="available_time"
             variant="standard"
             margin="normal"
           />

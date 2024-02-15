@@ -210,6 +210,20 @@ const Booking = () => {
                         </p>
                       </div>
                       <div>
+                        <p>
+                          <span
+                            style={{
+                              fontWeight: 600,
+                              fontSize: "18px",
+                              marginRight: "15px",
+                            }}
+                          >
+                            Show time :
+                          </span>
+                          {movie.available_time}
+                        </p>
+                      </div>
+                      <div>
                         <h2>Movie Seat Booking</h2>
                         <div>
                           {Array.from({ length: rows }, (_, rowIndex) => (
